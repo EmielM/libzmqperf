@@ -7,32 +7,42 @@
 #include <zmq.hpp>
 #include "pull.hpp"
 #include "xreq.hpp"
+#include "xrep.hpp"
 
 #undef private
 
 uint64_t zmq_queue_size_in(zmq::socket_t* socket) {
+
 	int type;
 	size_t type_size = sizeof(type);
 
 	socket->getsockopt(ZMQ_TYPE, &type, &type_size);
 
-	zmq::fq_t* fq;
+	uint64_t qs = 0;
 
-	if(type == ZMQ_PULL)
-		fq = &((zmq::pull_t*)(socket->ptr))->fq;
-	else if (type == ZMQ_DEALER)
-		fq = &((zmq::xreq_t*)(socket->ptr))->fq;
-	else
-		return 0;
+	if(type == ZMQ_PULL || type == ZMQ_DEALER) {
 
-	uint64_t queued = 0;
+		zmq::fq_t* fq;
+		if (type == ZMQ_PULL)
+			fq = &((zmq::pull_t*)(socket->ptr))->fq;
+		else
+			fq = &((zmq::xreq_t*)(socket->ptr))->fq;
 
-	int pipes = fq->pipes.size();
-	for (int i = 0; i < pipes; i++) {
-		zmq::reader_t* r = fq->pipes[i];
-		zmq::writer_t* w = r->writer;
-		queued += (w->msgs_written - r->msgs_read);
+		for (int i = 0; i < fq->pipes.size(); i++) {
+			zmq::reader_t* r = fq->pipes[i];
+			zmq::writer_t* w = r->writer;
+			qs += w->msgs_written - r->msgs_read;
+		}
+	}
+	else if (type == ZMQ_ROUTER) {
+		zmq::xrep_t::inpipes_t* inpipes = &((zmq::xrep_t*)(socket->ptr))->inpipes;
+
+		for (int i = 0; i < inpipes->size(); i++) {
+			zmq::reader_t* r = (*inpipes)[i].reader;
+			zmq::writer_t* w = r->writer;
+			qs += w->msgs_written - r->msgs_read;
+		}
 	}
 
-	return queued;
+	return qs;
 }
