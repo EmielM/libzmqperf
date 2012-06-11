@@ -1,7 +1,7 @@
 libzmqperf
 ==========
 
-Helper lib to do some measurements on ZMQ internals. Currently, it supports guestimating the size of unprocessed incoming messages for ZMQ_PULL and ZMQ_DEALER sockets.
+Helper lib to do some measurements on ZMQ internals. Currently, it supports guestimating the size of unprocessed incoming messages for `ZMQ_PULL` and `ZMQ_DEALER` sockets.
 
 ### Disclaimer ###
 
@@ -27,7 +27,7 @@ Helper lib to do some measurements on ZMQ internals. Currently, it supports gues
 	      of conditions and the following disclaimer in the documentation and/or other materials
 	      provided with the distribution.
 	
-	THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDER> ``AS IS'' AND ANY EXPRESS OR IMPLIED
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER ``AS IS'' AND ANY EXPRESS OR IMPLIED
 	WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 	FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> OR
 	CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
