@@ -11,7 +11,7 @@
 
 #undef private
 
-uint64_t zmq_queue_size_in(zmq::socket_t* socket) {
+uint64_t zmq_recv_backlog(zmq::socket_t* socket) {
 
 	int type;
 	size_t type_size = sizeof(type);
